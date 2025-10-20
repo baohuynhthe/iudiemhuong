@@ -28,17 +28,18 @@
       margin-bottom: 20px;
     }
 
-    h1 {
+    .line {
       color: #d63384;
-      font-size: 1.8rem;
-      font-weight: bold;
+      font-size: 1.4rem;
+      font-weight: 500;
       opacity: 0;
-      animation: moveUp 4s ease-out forwards;
+      transform: translateY(50px);
+      animation: moveUp 1s ease-out forwards;
     }
 
     @keyframes moveUp {
       0% {
-        transform: translateY(100px);
+        transform: translateY(50px);
         opacity: 0;
       }
       100% {
@@ -66,26 +67,39 @@
 </head>
 <body>
   <img src="https://baohuynhthe.github.io/iudiemhuong/aiphi.jfif" alt="Ảnh của Diễm Hương">
-  <h1 id="message">
-    Chúc mừng ngày 20/10 💖<br>
-    Gửi đến Diễm Hương xinh đẹp nhất trong tim anh!<br>
-    Chúc em luôn rạng rỡ, hạnh phúc và được yêu thương mỗi ngày.<br>
-    Anh yêu em rất nhiều 💐💞
-  </h1>
   
+  <div id="message"></div>
+
   <button id="playBtn">Nhấn để phát nhạc 🎵</button>
 
-  <audio id="music" src="https://archive.org/download/don-gian-anh-yeu-em-hoang-ton/Don%20Gian%20Anh%20Yeu%20Em%20-%20Hoang%20Ton.mp3"></audio>
+  <audio id="music" src="dongiananhyeuem.mp3"></audio>
 
   <script>
     const btn = document.getElementById('playBtn');
     const music = document.getElementById('music');
     const message = document.getElementById('message');
 
+    const lines = [
+      "💖 Chúc mừng ngày 20/10 💐",
+      "Gửi đến Diễm Hương xinh đẹp nhất trong tim anh!",
+      "Chúc em luôn rạng rỡ, hạnh phúc và được yêu thương mỗi ngày 💕",
+      "Anh yêu em rất nhiều — mãi mãi 💞"
+    ];
+
+    function showLines() {
+      lines.forEach((text, i) => {
+        const line = document.createElement("div");
+        line.className = "line";
+        line.style.animationDelay = `${i * 2}s`; // mỗi dòng cách nhau 2s
+        line.textContent = text;
+        message.appendChild(line);
+      });
+    }
+
     btn.addEventListener('click', () => {
       music.play();
       btn.style.display = 'none';
-      message.style.animation = "moveUp 4s ease-out forwards";
+      showLines();
     });
   </script>
 </body>
