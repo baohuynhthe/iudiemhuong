@@ -6,43 +6,83 @@
   <title>Đơn Giản Anh Yêu Em 🎵</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
-      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      font-family: "Poppins", sans-serif;
+      background: url("https://baohuynhthe.github.io/iudiemhuong/aiphi.jfif") no-repeat center center/cover;
+      overflow: hidden;
     }
+
+    /* Ánh sáng lung linh trên nền */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3) 0%, transparent 70%),
+                  radial-gradient(circle at 80% 80%, rgba(255,255,255,0.2) 0%, transparent 70%);
+      animation: shimmer 6s infinite alternate;
+    }
+    @keyframes shimmer {
+      0% {opacity: 0.6;}
+      100% {opacity: 1;}
+    }
+
     .card {
-      background: white;
-      padding: 28px;
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      position: relative;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(10px);
+      padding: 32px;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
       text-align: center;
       width: 90%;
       max-width: 420px;
+      z-index: 2;
     }
+
     h2 {
-      margin-bottom: 8px;
-      color: #333;
+      color: #ff0066;
+      font-size: 24px;
+      margin-bottom: 10px;
     }
+
     p {
-      color: #555;
-      margin: 8px 0 16px;
+      color: #333;
+      margin-bottom: 20px;
     }
-    button {
-      padding: 12px 20px;
-      background: #ff7b00;
-      color: white;
-      font-size: 16px;
+
+    #heartBtn {
+      background: none;
       border: none;
-      border-radius: 10px;
+      font-size: 48px;
       cursor: pointer;
-      transition: background 0.25s;
+      color: #ff4081;
+      animation: pulse 1.2s infinite;
     }
-    button:hover {
-      background: #ff5a00;
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    /* Hiệu ứng tim bay */
+    .heart {
+      position: fixed;
+      bottom: 50px;
+      font-size: 24px;
+      color: #ff4b6e;
+      animation: floatUp 2s ease-out forwards;
+      opacity: 0.8;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-150px) scale(1.5); opacity: 0; }
     }
   </style>
 </head>
@@ -51,32 +91,42 @@
     <h2>🎶 Đơn Giản Anh Yêu Em</h2>
     <p id="status">Trang đang phát nhạc (ban đầu không tiếng)...</p>
     <audio id="player" autoplay muted loop playsinline>
-      <!-- 👉 Thay link này bằng link mp3 của bạn -->
       <source src="dongiananhyeuem.mp3" type="audio/mpeg">
     </audio>
-    <button id="unmuteBtn">🔊 Bật tiếng</button>
+    <button id="heartBtn">💖</button>
   </div>
 
   <script>
     const player = document.getElementById("player");
     const status = document.getElementById("status");
-    const unmuteBtn = document.getElementById("unmuteBtn");
+    const heartBtn = document.getElementById("heartBtn");
 
     window.addEventListener("load", async () => {
       try {
         await player.play();
         status.textContent = "🎧 Nhạc đang phát (không tiếng)";
       } catch (err) {
-        status.textContent = "Không thể tự phát, hãy chạm 'Bật tiếng'";
+        status.textContent = "Không thể tự phát, hãy chạm vào tim 💖";
       }
     });
 
-    unmuteBtn.addEventListener("click", async () => {
+    heartBtn.addEventListener("click", async () => {
       try {
         player.muted = false;
         await player.play();
         status.textContent = "🎵 Đang phát nhạc có tiếng!";
-        unmuteBtn.style.display = "none";
+        heartBtn.disabled = true;
+
+        // Thả tim lung linh
+        for (let i = 0; i < 8; i++) {
+          const heart = document.createElement("div");
+          heart.classList.add("heart");
+          heart.textContent = "💖";
+          heart.style.left = Math.random() * window.innerWidth + "px";
+          heart.style.animationDuration = (1.5 + Math.random() * 1.5) + "s";
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 2000);
+        }
       } catch (err) {
         status.textContent = "Không thể bật tiếng (bị trình duyệt chặn)";
       }
