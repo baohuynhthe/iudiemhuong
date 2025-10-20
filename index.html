@@ -3,40 +3,84 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Phát nhạc từ QR</title>
+  <title>Đơn Giản Anh Yêu Em 🎵</title>
   <style>
-    body { font-family: Arial, sans-serif; display:flex; height:100vh; align-items:center; justify-content:center; margin:0; background:#f0f0f0; }
-    .card { background:white; padding:24px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.1); text-align:center; max-width:400px; }
-    button { margin:10px; padding:10px 20px; border:none; border-radius:8px; background:#007bff; color:white; font-size:16px; cursor:pointer; }
-    button:hover { background:#0056b3; }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    }
+    .card {
+      background: white;
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      text-align: center;
+      width: 90%;
+      max-width: 420px;
+    }
+    h2 {
+      margin-bottom: 8px;
+      color: #333;
+    }
+    p {
+      color: #555;
+      margin: 8px 0 16px;
+    }
+    button {
+      padding: 12px 20px;
+      background: #ff7b00;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+    button:hover {
+      background: #ff5a00;
+    }
   </style>
 </head>
 <body>
   <div class="card">
-    <h2>🎵 Nghe nhạc demo</h2>
-    <p id="status">Đang sẵn sàng…</p>
-    <audio id="player" preload="auto" controls>
-      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    <h2>🎶 Đơn Giản Anh Yêu Em</h2>
+    <p id="status">Trang đang phát nhạc (ban đầu không tiếng)...</p>
+    <audio id="player" autoplay muted loop playsinline>
+      <!-- 👉 Thay link này bằng link mp3 của bạn -->
+      <source src="dongiananhyeuem.mp3" type="audio/mpeg">
     </audio>
-    <br />
-    <button id="playBtn">▶️ Phát nhạc</button>
-    <button id="pauseBtn">⏸ Dừng</button>
+    <button id="unmuteBtn">🔊 Bật tiếng</button>
   </div>
 
   <script>
-    const player = document.getElementById('player');
-    const status = document.getElementById('status');
-    const playBtn = document.getElementById('playBtn');
-    const pauseBtn = document.getElementById('pauseBtn');
+    const player = document.getElementById("player");
+    const status = document.getElementById("status");
+    const unmuteBtn = document.getElementById("unmuteBtn");
 
-    player.play().then(() => {
-      status.textContent = '🎶 Đang phát...';
-    }).catch(() => {
-      status.textContent = '👉 Chạm nút "Phát nhạc" để nghe';
+    window.addEventListener("load", async () => {
+      try {
+        await player.play();
+        status.textContent = "🎧 Nhạc đang phát (không tiếng)";
+      } catch (err) {
+        status.textContent = "Không thể tự phát, hãy chạm 'Bật tiếng'";
+      }
     });
 
-    playBtn.onclick = () => { player.play(); status.textContent = '🎶 Đang phát...'; };
-    pauseBtn.onclick = () => { player.pause(); status.textContent = '⏸ Đã tạm dừng'; };
+    unmuteBtn.addEventListener("click", async () => {
+      try {
+        player.muted = false;
+        await player.play();
+        status.textContent = "🎵 Đang phát nhạc có tiếng!";
+        unmuteBtn.style.display = "none";
+      } catch (err) {
+        status.textContent = "Không thể bật tiếng (bị trình duyệt chặn)";
+      }
+    });
   </script>
 </body>
 </html>
